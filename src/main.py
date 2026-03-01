@@ -16,12 +16,16 @@ def main():
 
     for chunk in read_sales_large("data/sales.csv"):
 
-        null_products = chunk["product"].isna().sum()
+        negative_amounts = chunk[chunk["amount"] < 0]
 
-        if null_products > 0:
-            logging.warning(f"Found {null_products} rows with null product")
+        if not negative_amounts.empty:
+            logging.warning(
+                f"Found {len(negative_amounts)} negative amounts"
+            )
 
-        chunk = chunk.dropna(subset=["product"])
+        # eliminamos solo los inválidos
+        chunk = chunk[chunk["amount"] >= 0]
+
         validated = validate_sales(chunk)
         cleaned = clean_sales(validated)
         logging.info(f"Clean rows: {len(cleaned)}")
