@@ -16,13 +16,17 @@ def main():
 
     for chunk in read_sales_large("data/sales.csv"):
 
-        negative_amounts = chunk[chunk["amount"] < 0]
+        invalid_rows = chunk[chunk["amount"] < 0]
 
-        if not negative_amounts.empty:
+        if not invalid_rows.empty:
             logging.warning(
-                f"Found {len(negative_amounts)} negative amounts"
+                f"Found {len(invalid_rows)} negative amounts"
             )
-
+            invalid_rows.to_parquet(
+                "data/invalid_sales.parquet",
+                index=False,
+                compression="snappy"
+            )
         # eliminamos solo los inválidos
         chunk = chunk[chunk["amount"] >= 0]
 
