@@ -17,7 +17,7 @@ def main():
     df_agg = aggregate_sales(df_clean)
     logging.info("Aggregation completed")
 
-    save_dataframe(df_agg, "data/sales_aggregated.csv")
+    save_dataframe(df_agg, "data/sales_aggregated.parquet")
     logging.info("Pipeline finished successfully")
 
 if __name__ == "__main__":
