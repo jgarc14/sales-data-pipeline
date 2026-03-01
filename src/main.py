@@ -1,8 +1,10 @@
 import logging
 from pathlib import Path
 
+import pandas as pd
+
 from src.config import setup_logger
-from src.extract import read_sales
+from src.extract import read_sales_large
 from src.transform import clean_sales, aggregate_sales
 from src.load import save_dataframe
 
@@ -10,13 +12,15 @@ def main():
     setup_logger()
     logging.info("Starting pipeline")
 
-    df = read_sales("data/sales.csv")
-    logging.info(f"Raw rows: {len(df)}")
+    frames = []
 
-    df_clean = clean_sales(df)
-    logging.info(f"Clean rows: {len(df_clean)}")
+    for chunk in read_sales_large("data/sales.csv"):
+        cleaned = clean_sales(chunk)
+        logging.info(f"Clean rows: {len(cleaned)}")
+        frames.append(cleaned)
 
-    df_agg = aggregate_sales(df_clean)
+    df_all = pd.concat(frames, ignore_index=True)
+    df_agg = aggregate_sales(df_all)
     logging.info("Aggregation completed")
 
     output_path = Path("data") / "sales_aggregated.parquet"
