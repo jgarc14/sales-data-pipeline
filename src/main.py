@@ -15,6 +15,13 @@ def main():
     frames = []
 
     for chunk in read_sales_large("data/sales.csv"):
+
+        null_products = chunk["product"].isna().sum()
+
+        if null_products > 0:
+            logging.warning(f"Found {null_products} rows with null product")
+
+        chunk = chunk.dropna(subset=["product"])
         validated = validate_sales(chunk)
         cleaned = clean_sales(validated)
         logging.info(f"Clean rows: {len(cleaned)}")
