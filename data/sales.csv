@@ -1,0 +1,8 @@
+order_id,customer_id,order_date,product,category,amount
+1,101,2025-01-01,Laptop,Electronics,1500
+2,102,2025-01-01,Mouse,Electronics,25
+3,101,2025-01-02,Keyboard,Electronics,75
+4,103,2025-01-02,Desk,Furniture,300
+5,104,2025-01-03,Chair,Furniture,200
+6,105,2025-01-03,,Electronics,50
+7,106,2025-01-04,Monitor,Electronics,-100
