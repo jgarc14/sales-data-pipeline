@@ -1,4 +1,6 @@
 import logging
+from pathlib import Path
+
 from src.config import setup_logger
 from src.extract import read_sales
 from src.transform import clean_sales, aggregate_sales
@@ -17,7 +19,10 @@ def main():
     df_agg = aggregate_sales(df_clean)
     logging.info("Aggregation completed")
 
-    save_dataframe(df_agg, "data/sales_aggregated.parquet")
+    output_path = Path("data") / "sales_aggregated.parquet"
+    save_dataframe(df_agg, output_path)
+
+    print(f"Saved to absolute path: {output_path.resolve()}")
     logging.info("Pipeline finished successfully")
 
 if __name__ == "__main__":
