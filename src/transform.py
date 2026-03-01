@@ -1,4 +1,14 @@
+import pandera.pandas as pa
+from pandera import Column, DataFrameSchema
 import pandas as pd
+
+sales_schema = DataFrameSchema({
+    "product": Column(str),
+    "amount": Column(float, checks=pa.Check.ge(0)),
+})
+
+def validate_sales(df: pd.DataFrame) -> pd.DataFrame:
+    return sales_schema.validate(df)
 
 def clean_sales(df: pd.DataFrame) -> pd.DataFrame:
     df = df.copy()

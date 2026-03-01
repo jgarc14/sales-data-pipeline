@@ -5,7 +5,7 @@ import pandas as pd
 
 from src.config import setup_logger
 from src.extract import read_sales_large
-from src.transform import clean_sales, aggregate_sales
+from src.transform import clean_sales, aggregate_sales, validate_sales
 from src.load import save_dataframe
 
 def main():
@@ -15,7 +15,8 @@ def main():
     frames = []
 
     for chunk in read_sales_large("data/sales.csv"):
-        cleaned = clean_sales(chunk)
+        validated = validate_sales(chunk)
+        cleaned = clean_sales(validated)
         logging.info(f"Clean rows: {len(cleaned)}")
         frames.append(cleaned)
 
