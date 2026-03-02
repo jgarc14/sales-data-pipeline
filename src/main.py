@@ -14,7 +14,7 @@ def main():
 
     frames = []
 
-    for chunk in read_sales_large("data/sales.csv"):
+    for chunk in read_sales_large("data/sales_large.csv"):
 
         invalid_rows = chunk[chunk["amount"] < 0]
 
